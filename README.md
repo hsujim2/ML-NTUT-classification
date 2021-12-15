@@ -1,7 +1,7 @@
 # ML-NTUT-classification
-This is the homework2 in Machining Learning class @ NTUT<br>
-It's a kaggle compititation for 50 Simpson charactors prediction<br>
-It's a big dataset, colab might can't handle it, so I ran it locally<br>
+This is the homework2 in Machining Learning class @ NTUT.<br>
+It's a kaggle compititation for 50 Simpson charactors prediction.<br>
+It's a big dataset, colab might can't handle it, so I ran it locally.<br>
 
 ## Environment<br>
 ### hardware<br>
@@ -31,8 +31,8 @@ Open Windows Terminal<br>
     wsl --install
     wsl --set-default-version 2
 
-Install ubuntu 20.04 in Windows store<br>
-Open Ubuntu in Windows Terminal(WSLg is optional)<br>
+Install ubuntu 20.04 in Windows store.<br>
+Open Ubuntu in Windows Terminal(WSLg is optional).<br>
 ### Install anaconda
 
     cd
@@ -40,8 +40,8 @@ Open Ubuntu in Windows Terminal(WSLg is optional)<br>
     curl –O https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
     bash Anaconda3-2020.02-Linux-x86_64.sh
     
-Press Enter many times and wait for installation<br>
-Close WSL and relogin<br>
+Press Enter many times and wait for installation.<br>
+Close WSL and relogin.<br>
 ### Setting up virtual environment
 
     conda create –n your_vir_env_name
@@ -53,12 +53,12 @@ Close WSL and relogin<br>
     conda install panda
 
 ### Checking Environment
-Check if GPU driver works<br>
+Check if GPU driver works.<br>
 
     nvidia-smi
 
 ![](https://i.imgur.com/EkHLnWe.png"Results")
-Check if tensorflows-gpu works<br>
+Check if tensorflows-gpu works.<br>
 ```Python
 import tensorflow as tf
 tf.config.list_physical_devices('GPU')
@@ -69,14 +69,14 @@ print("################################################")
 print(cuda, cudnn)
 ```
 ![](https://i.imgur.com/ul9WnJC.png"Results")
-Now your pc is ready to train tensorflow model
+Now your pc is ready to train tensorflow model.<br>
 ## Run Python Code(未完成)
 
     sudo apt install git
     pip3 install kaggle
     
-Download kaggle api from kaggle->account
-Put the json file to ~/.kaggle
+Download kaggle api from kaggle->account.<br>
+Put the json file to ~/.kaggle.<br>
 
     git clone https://github.com/hsujim2/ML-NTUT-classification
     cd ML-NTUT-classification
@@ -84,7 +84,7 @@ Put the json file to ~/.kaggle
     unzip -qq machine-learningntut-2021-autumn-classification.zip
     python3 hw2.py
     
-The Result will save as test.csv in ML-NTUT-classification folder<br>
+The Result will save as test.csv in ML-NTUT-classification folder.<br>
 
 ## code
 ### Import
@@ -101,6 +101,9 @@ import pandas as pd
 import ast
 ```
 ### setting up variables
+setting image size(it can resize using Imagedatagen), epochs and batch size.<br>
+setting batch_size to 256 will ran out of vram and stop training.<br>
+
 ```Python
 ######################setting up some variables####################
 train_data_dir="/home/hsujim/theSimpsons-train/train/"
@@ -116,6 +119,9 @@ for gpu in gpus:
 ```
 
 ### read training data
+Ise image datagen to load image, it will read all folder and label them automatically.<br>
+Also, it can help split validation data and rotate, shear, zoom image randomly.<br>
+
 ```Python
 ####################read train data###############################
 train_datagen = ImageDataGenerator(rescale=1./255,
@@ -142,6 +148,7 @@ print(train_generator.labels)
 ```
 
 ### setup and trainning
+I use Xception pretrained model and two Dense layers as output.<br>
 ```Python
 #######################setup module##############################
 #cnn_base = InceptionV3(weights="imagenet",include_top=False,input_shape=(224, 224, 3))
@@ -172,8 +179,11 @@ model.save("/home/hsujim/model")
 ```
 
 ### Predict
+Setting shuffle = True when using datagen for test data.<br>
+Shuffle will change the order of data in order to get better trainning result.<br>
+But the order of filenames won't be change at the same time.<br>
 ```Python
-#####################read test data########################
+#######################read test data#########################
 test_data_dir = "/home/hsujim/theSimpsons-test/"
 test_datagen = ImageDataGenerator(rescale=1./255)
 test_generator = test_datagen.flow_from_directory(
@@ -182,7 +192,8 @@ test_generator = test_datagen.flow_from_directory(
     batch_size = 1,
     shuffle = False,#important!! Test data will misorder if suffle is True, which is keras's default
     class_mode = 'categorical')
-
+    
+###########################Pridect############################
 Predict = model.predict_generator(test_generator,steps=len(test_generator),verbose=1)
 result = np.argmax(Predict,axis=1)#find the maximum value in 50 categorical
 
@@ -201,8 +212,10 @@ select_df.to_csv('test.csv',index= False)#save to csv
 ```
 ## result
 ### category
+There are 77560 images in training dataset and 19369 images in validation dataset in 50 classes.<br>
 ![](https://i.imgur.com/tPWBBcc.png)
 ### module
-![](https://i.imgur.com/qbHLTkx.png)
+![](https://i.imgur.com/61xdSVt.png)
 ### training
-![](https://i.imgur.com/2SP0CHx.png)
+2060 needs above 4 hours to train this module.<br>
+![](https://i.imgur.com/svHAQsZ.jpg)
