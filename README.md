@@ -219,3 +219,4 @@ There are 77560 images in training dataset and 19369 images in validation datase
 ### training
 2060 needs above 4 hours to train this module.<br>
 ![](https://i.imgur.com/svHAQsZ.jpg)
+### kaggle result
