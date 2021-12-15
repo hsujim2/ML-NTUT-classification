@@ -1,7 +1,7 @@
 # ML-NTUT-classification
-This is the homework2 in Machining Learning class @ NTUT.<br>
-It's a kaggle compititation for 50 Simpson charactors prediction.<br>
-It's a big dataset, colab might can't handle it, so I ran it locally.<br>
+***This is the homework2 in Machining Learning class @ NTUT.<br>***
+***It's a kaggle compititation for 50 Simpson charactors prediction.<br>***
+***It's a big dataset, colab might can't handle it, so I ran it locally.<br>***
 
 ## Environment<br>
 ### hardware<br>
@@ -9,7 +9,7 @@ It's a big dataset, colab might can't handle it, so I ran it locally.<br>
 >ram: DDR4 32G 3200<br>
 >gpu: RTX2060-6G<br>
 
-### software
+### Software
 >Windows 11 Insider Preview build 22518<br>
 >with WSL2 and WSLg installed<br>
 >GPU_driver 496.76 with WSL support<br>
@@ -86,7 +86,7 @@ Put the json file to ~/.kaggle.<br>
     
 The Result will save as test.csv in ML-NTUT-classification folder.<br>
 
-## code
+## Python Code
 ### Import
 ```Python
 ##########################import###################################
@@ -100,9 +100,9 @@ import tensorflow as tf
 import pandas as pd
 import ast
 ```
-### setting up variables
-setting image size(it can resize using Imagedatagen), epochs and batch size.<br>
-setting batch_size to 256 will ran out of vram and stop training.<br>
+### Setting up variables
+Setting image size(it can resize using Imagedatagen), epochs and batch size.<br>
+Setting batch_size to 256 will ran out of vram and stop training.<br>
 
 ```Python
 ######################setting up some variables####################
@@ -118,8 +118,8 @@ for gpu in gpus:
   tf.config.experimental.set_memory_growth(gpu, True)
 ```
 
-### read training data
-Ise image datagen to load image, it will read all folder and label them automatically.<br>
+### Read training data
+Use image datagen to load image, it will read all folder and label them automatically.<br>
 Also, it can help split validation data and rotate, shear, zoom image randomly.<br>
 
 ```Python
@@ -147,7 +147,7 @@ print(train_generator.class_indices)
 print(train_generator.labels)
 ```
 
-### setup and trainning
+### Setup and trainning
 I use Xception pretrained model and two Dense layers as output.<br>
 ```Python
 #######################setup module##############################
@@ -210,13 +210,14 @@ select_df = pd.DataFrame({"id": idd,"character": Y_predict})
 select_df = select_df.sort_values(by=['id'], ascending=True)#sort filename with int datatype(1,2,3...)
 select_df.to_csv('test.csv',index= False)#save to csv
 ```
-## result
-### category
+## Result
+### Category
 There are 77560 images in training dataset and 19369 images in validation dataset in 50 classes.<br>
 ![](https://i.imgur.com/tPWBBcc.png)
-### module
+### Module
 ![](https://i.imgur.com/61xdSVt.png)
-### training
+### Training
 2060 needs above 4 hours to train this module.<br>
 ![](https://i.imgur.com/svHAQsZ.jpg)
-### kaggle result
+### Kaggle result
+![](https://i.imgur.com/2fBmRzf.png)
