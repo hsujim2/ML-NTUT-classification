@@ -24,16 +24,16 @@ student:電子四甲 107360144  許智棋
 >Pillow 8.4.0<br>
 >Pandas 1.3.4<br>
 ## Set up environment
-Download Nvidia Graphic Card Driver with WSL support<br>
-Enable hyper-v features<br>
+Download [Nvidia Graphic Card Driver with WSL support](https://developer.nvidia.com/cuda/wsl)<br>
+[Enable hyper-v features](https://docs.microsoft.com/zh-tw/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)<br>
 Open Windows Terminal<br>
 ### Install WSL
 
     wsl --install
     wsl --set-default-version 2
 
-Install ubuntu 20.04 in Windows store.<br>
-Open Ubuntu in Windows Terminal(WSLg is optional).<br>
+[Install ubuntu 20.04 in Windows store.](https://www.microsoft.com/zh-tw/p/ubuntu-2004-lts/9n6svws3rx71?activetab=pivot:overviewtab)<br>
+Open Ubuntu in Windows Terminal([WSLg](https://github.com/microsoft/wslg) is optional).<br>
 ### Install anaconda
 
     cd
@@ -149,7 +149,7 @@ print(train_generator.labels)
 ```
 
 ### Setup and trainning
-I use Xception pretrained model and two Dense layers as output.<br>
+I use [Xception](https://www.cnblogs.com/sariel-sakura/p/13402056.html) pretrained model and two Dense layers as output.<br>
 ```Python
 #######################setup module##############################
 #cnn_base = InceptionV3(weights="imagenet",include_top=False,input_shape=(224, 224, 3))
