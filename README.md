@@ -1,7 +1,8 @@
 # ML-NTUT-classification
 ***This is the homework2 in Machining Learning class @ NTUT.<br>***
 ***It's a kaggle compititation for 50 Simpson charactors prediction.<br>***
-***It's a big dataset, colab might can't handle it, so I ran it locally.<br>***
+***It's a big dataset, colab can't handle it, so I ran it locally.<br>***
+student:電子四甲 107360144  許智棋
 
 ## Environment<br>
 ### hardware<br>
@@ -212,7 +213,7 @@ select_df.to_csv('test.csv',index= False)#save to csv
 ```
 ## Result
 ### Category
-There are 77560 images in training dataset and 19369 images in validation dataset in 50 classes.<br>
+There are 77560 images in training dataset and 19369 images in validation dataset with 50 classes.<br>
 ![](https://i.imgur.com/tPWBBcc.png)
 ### Module
 ![](https://i.imgur.com/61xdSVt.png)
