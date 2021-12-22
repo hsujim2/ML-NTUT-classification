@@ -71,7 +71,7 @@ print(cuda, cudnn)
 ```
 ![](https://i.imgur.com/ul9WnJC.png"Results")
 Now your pc is ready to train tensorflow model.<br>
-## Run Python Code(未完成)
+## Run Python Code
 
     sudo apt install git
     pip3 install kaggle
@@ -86,6 +86,14 @@ Put the json file to ~/.kaggle.<br>
     python3 hw2.py
     
 The Result will save as test.csv in ML-NTUT-classification folder.<br>
+### The final result using multiple module
+    python3 hw2_densenet.py
+    python3 hw2_incep_res_v2.py
+    python3 hw2_resnet152v2.py
+    python3 hw2_xception.py
+After trained four module, put the highest validation_accuracy to the weights in hw2_test.py
+    python3 hw2_test.py
+The result will in combine_test.csv
 
 ## Python Code
 ### Import
@@ -108,9 +116,9 @@ Setting batch_size to 256 will ran out of vram and stop training.<br>
 ```Python
 ######################setting up some variables####################
 train_data_dir="/home/hsujim/theSimpsons-train/train/"
-img_height = 224
-img_width = 224
-batch_size = 128
+img_height = 71
+img_width = 71
+batch_size = 512
 nb_epochs = 16
 
 #To prevent keras from using all vram
@@ -155,7 +163,7 @@ I use [Xception](https://www.cnblogs.com/sariel-sakura/p/13402056.html) pretrain
 #cnn_base = InceptionV3(weights="imagenet",include_top=False,input_shape=(224, 224, 3))
 #use pre-trained model for input
 cnn_base = Xception(weights='imagenet',include_top=False,input_shape=(img_height,img_width,3))
-cnn_base.trainable = False#keep pre-trained model parameter
+cnn_base.trainable = True #To get better results
 #add some dense layers for output
 classify = Sequential()
 classify.add(Flatten())
@@ -167,6 +175,9 @@ model.add(cnn_base)
 model.add(classify)
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['acc'])
 model.summary()
+checkpoint = ModelCheckpoint("/home/t107360144/xception", monitor='val_categorical_accuracy', verbose=1, save_best_only=True,
+mode='max')#Using check points to save the best one
+callbacks_list = [checkpoint]
 
 #####################train module#########################
 history = model.fit_generator(
@@ -175,7 +186,8 @@ history = model.fit_generator(
     validation_data = validation_generator,
     validation_steps = validation_generator.samples // batch_size,
     epochs = nb_epochs,
-    verbose=1)
+    verbose=1,
+    callbacks=callbacks_list)#remember to add callbacks here
 model.save("/home/hsujim/model")
 ```
 
@@ -196,6 +208,13 @@ test_generator = test_datagen.flow_from_directory(
     
 ###########################Pridect############################
 Predict = model.predict_generator(test_generator,steps=len(test_generator),verbose=1)
+
+#############################If using multi module############################
+#Predict1 = model1.predict......
+#Then add them together using their val_acc like:
+#Predict = Predict1 * weight1 + Predict2 * weight2 + Predict3 * weight3......
+##############################################################################
+
 result = np.argmax(Predict,axis=1)#find the maximum value in 50 categorical
 
 my_dict2 = dict((y,x) for x,y in train_generator.class_indices.items())#exchange the keys and values in dictionary
@@ -222,3 +241,5 @@ There are 77560 images in training dataset and 19369 images in validation datase
 ![](https://i.imgur.com/svHAQsZ.jpg)
 ### Kaggle result
 ![](https://i.imgur.com/2fBmRzf.png)
+
+## Result with multi module
