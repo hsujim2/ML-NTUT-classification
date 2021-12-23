@@ -146,6 +146,7 @@ train_generator = train_datagen.flow_from_directory(
     batch_size=batch_size,
     class_mode='categorical',
     subset='training') # set as training data
+train_dataset = tf.data.Dataset.from_generator(lambda:train_generator,(tf.float32, tf.float32))#transform datagen to dataset, to increase trainning speed.
 
 validation_generator = train_datagen.flow_from_directory(
     train_data_dir, # same directory as training data
@@ -153,6 +154,8 @@ validation_generator = train_datagen.flow_from_directory(
     batch_size=batch_size,
     class_mode='categorical',
     subset='validation') # set as validation data
+valid_dataset = tf.data.Dataset.from_generator(lambda:validation_generator,(tf.float32, tf.float32))
+
 print(train_generator.class_indices)
 print(train_generator.labels)
 ```
@@ -182,9 +185,9 @@ callbacks_list = [checkpoint]
 
 #####################train module#########################
 history = model.fit_generator(
-    train_generator,
+    train_dataset,
     steps_per_epoch = train_generator.samples // batch_size,
-    validation_data = validation_generator,
+    validation_data = valid_dataset,
     validation_steps = validation_generator.samples // batch_size,
     epochs = nb_epochs,
     verbose=1,
@@ -254,3 +257,10 @@ densenet
 ![](https://i.imgur.com/KDlv5qq.jpg)
 result
 ![](https://i.imgur.com/jywBRNx.png)
+
+## Problem and solving
+### Trainning too slow
+1. Imagedatagen didn't read images to vram, only read it whem needed, althought ssd usage is low, but cpu need to process the data reading from pcie bus.
+    using tf.data.Dataset.from_generator to convert datagen to dataset, which will copy all image to vram.
+2. Trainning too slow and GPU usage is low. The resoltion it too large, and vram is not big enough.
+    Lower the batch size, but when resuce, GPU usage increase, in the end it's not reduce too much time.
