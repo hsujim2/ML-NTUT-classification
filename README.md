@@ -92,6 +92,7 @@ The Result will save as test.csv in ML-NTUT-classification folder.<br>
     python3 hw2_resnet152v2.py
     python3 hw2_xception.py
 After trained four module, put the highest validation_accuracy to the weights in hw2_test.py
+
     python3 hw2_test.py
 The result will in combine_test.csv
 
@@ -243,3 +244,13 @@ There are 77560 images in training dataset and 19369 images in validation datase
 ![](https://i.imgur.com/2fBmRzf.png)
 
 ## Result with multi module
+xception
+![](https://i.imgur.com/VQLKyXb.jpg)
+resnet 152
+![](https://i.imgur.com/MZRap2Y.jpg)
+inception
+![](https://i.imgur.com/2p1FAdM.jpg)
+densenet
+![](https://i.imgur.com/KDlv5qq.jpg)
+result
+![](https://i.imgur.com/jywBRNx.png)
